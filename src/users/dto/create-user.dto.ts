@@ -5,6 +5,7 @@ import {
   IsString,
   Length,
   IsNumber,
+  IsPositive,
 } from 'class-validator';
 
 @Exclude()
@@ -12,6 +13,7 @@ export class CreateUserDto {
   @Expose()
   @IsNotEmpty()
   @IsNumber()
+  @IsPositive()
   readonly id: number;
 
   @Expose()
@@ -30,6 +32,6 @@ export class CreateUserDto {
 
   @Expose()
   @IsString()
-  @Length(6, 200)
+  @Length(6, 20)
   readonly password: string;
 }

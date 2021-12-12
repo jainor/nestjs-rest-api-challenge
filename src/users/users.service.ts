@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {
@@ -29,7 +29,12 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.prisma.user.update({
+      data: updateUserDto,
+      where: {
+        id,
+      },
+    });
   }
 
   remove(id: number) {

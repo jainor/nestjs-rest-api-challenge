@@ -17,10 +17,6 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    // tslint:disable-line:no-console
-    console.log(createUserDto.firstName);
-    // tslint:disable-line:no-console
-    console.log(createUserDto.id);
     return this.usersService.create(createUserDto);
   }
 
