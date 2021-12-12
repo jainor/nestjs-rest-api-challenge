@@ -24,6 +24,7 @@ model Product {
   price               Decimal               @db.Decimal
   categoryId         Int                    @map("category_id")
   stock               Int                   @default(0)
+  imageUrl           String?               @db.VarChar @map("image_url")
   createdAt          DateTime              @default(now()) @map("created_at")
   updatedAt          DateTime              @default(now()) @map("updated_at")
   categories          Category            @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_categories_id_fkey")

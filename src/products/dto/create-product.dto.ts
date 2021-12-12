@@ -42,4 +42,8 @@ export class CreateProductDto {
   @IsNumber()
   @IsPositive()
   readonly stock: number;
+
+  @Expose()
+  @IsString()
+  readonly imageUrl: string;
 }
