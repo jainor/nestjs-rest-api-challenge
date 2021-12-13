@@ -9,10 +9,14 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { id } = createUserDto;
+    const { id, email } = createUserDto;
 
     if (await this.prisma.user.count({ where: { id } })) {
       throw new HttpException('id already used', HttpStatus.BAD_REQUEST);
+    }
+
+    if (await this.prisma.user.count({ where: { email } })) {
+      throw new HttpException('email already used', HttpStatus.BAD_REQUEST);
     }
 
     return this.prisma.user.create({ data: createUserDto });
