@@ -28,9 +28,9 @@ export class CategoriesService {
     });
   }
 
-  update(id: number, updateCategorieDto: UpdateCategoryDto) {
+  update(id: number, updateCategoryDto: UpdateCategoryDto) {
     return this.prisma.category.update({
-      data: updateCategorieDto,
+      data: updateCategoryDto,
       where: {
         id,
       },

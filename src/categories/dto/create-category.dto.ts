@@ -25,5 +25,4 @@ export class CreateCategoryDto {
   @Expose()
   @IsString()
   readonly description: string;
-
 }
