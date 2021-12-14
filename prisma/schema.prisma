@@ -66,14 +66,16 @@ model User {
   createdAt      DateTime         @default(now())  @map("created_at")
   isPublicEmail Boolean          @default(true) @map("is_public_email")
   isVerified     Boolean          @default(false)  @map("is_verified")
-  role            role_type        @default(client)
+  role            RoleType        @default(client)
   shoppingCarts  ShoppingCart[]
   
   @@map("users")
 }
 
-enum role_type {
-  client
-  manager
-  admin
+enum RoleType {
+  client  @map("client")
+  manager @map("manager")
+  admin @map("admin")
+
+  @@map("role_type")
 }
