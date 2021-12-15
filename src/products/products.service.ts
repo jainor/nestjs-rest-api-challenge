@@ -3,9 +3,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { PaginationRequest } from 'src/Pagination/dto/pagination-request.dto';
+import { PaginationRequest } from '../pagination/dto/pagination-request.dto';
 import { ProductDto } from './dto/product-dto';
-import { PaginationResponse } from 'src/Pagination/dto/pagination-response.dto';
+import { PaginationResponse } from '../pagination/dto/pagination-response.dto';
 import { plainToClass } from 'class-transformer';
 
 @Injectable()
