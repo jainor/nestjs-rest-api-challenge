@@ -15,15 +15,8 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    // tslint:disable-next-line:no-console
-    console.log('here');
-    // tslint:disable-next-line:no-console
-    console.log(roles);
-
     const request = context.switchToHttp().getRequest();
     const { user } = request;
-    // tslint:disable-next-line:no-console
-    console.log(user);
 
     return user && roles.includes(user.role);
   }
