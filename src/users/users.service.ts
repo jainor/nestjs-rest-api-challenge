@@ -8,6 +8,8 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from '../jwt-strategy/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { PublicUserDto } from './dto/public-user.dto';
+import { UserDto } from './dto/user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -32,8 +34,11 @@ export class UsersService {
     return this.prisma.user.create({ data: createUserHashedDto });
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll(): Promise<UserDto[]> {
+    const result = await this.prisma.user.findMany();
+
+    const data = plainToClass(UserDto, result);
+    return data;
   }
 
   findOne(id: number) {
