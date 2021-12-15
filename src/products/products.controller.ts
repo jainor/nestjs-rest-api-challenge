@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -14,6 +17,9 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../users/decorators/rol.decorator';
 import { RolesGuard } from '../users/decorators/rol.guard';
+import { PaginationRequest } from 'src/Pagination/dto/pagination-request.dto';
+import { ProductDto } from './dto/product-dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -28,8 +34,9 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  @UsePipes(new ValidationPipe({ transform: true }))
+  findAll(@Query() paginationRequest: PaginationRequest) {
+    return this.productsService.findAll(paginationRequest);
   }
 
   @Get(':id')

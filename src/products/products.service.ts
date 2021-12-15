@@ -3,6 +3,10 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { PaginationRequest } from 'src/Pagination/dto/pagination-request.dto';
+import { ProductDto } from './dto/product-dto';
+import { PaginationResponse } from 'src/Pagination/dto/pagination-response.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ProductsService {
@@ -18,8 +22,27 @@ export class ProductsService {
     return this.prisma.product.create({ data: createProductDto });
   }
 
-  findAll() {
-    return this.prisma.product.findMany();
+  async findAll(
+    paginationRequest: PaginationRequest,
+  ): Promise<PaginationResponse<ProductDto>> {
+    const PER_PAGE = paginationRequest.perPage || 100;
+    const PAGE = paginationRequest.page || 1;
+
+    const result = await this.prisma.product.findMany({
+      take: PER_PAGE,
+      skip: (PER_PAGE - 1) * PAGE,
+      where: {
+        stock: {
+          gt: 0,
+        },
+      }, //products with positive stock
+    });
+
+    return {
+      results: result.length,
+      page: PAGE,
+      data: plainToClass(ProductDto, result),
+    };
   }
 
   findOne(id: number) {
