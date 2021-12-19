@@ -4,9 +4,16 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PassportModule } from '@nestjs/passport';
+import { CartItemsModule } from './cart-items/cart-items.module';
 
 @Module({
-  imports: [UsersModule, PrismaModule, ProductsModule, CategoriesModule],
+  imports: [
+    UsersModule,
+    PrismaModule,
+    ProductsModule,
+    CategoriesModule,
+    CartItemsModule,
+  ],
   controllers: [],
   providers: [],
 })
