@@ -30,7 +30,7 @@ export class ProductsService {
 
     const result = await this.prisma.product.findMany({
       take: PER_PAGE,
-      skip: (PER_PAGE - 1) * PAGE,
+      skip: (PAGE - 1) * PER_PAGE,
       where: {
         stock: {
           gt: 0,
