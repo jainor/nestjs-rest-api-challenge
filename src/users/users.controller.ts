@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -32,6 +34,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
   @Post('signin')
+  @UsePipes(new ValidationPipe({ transform: true }))
   signIn(@Body() CredentialsUserDto: CredentialsUserDto) {
     return this.usersService.auth(CredentialsUserDto);
   }
