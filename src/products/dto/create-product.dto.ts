@@ -35,7 +35,6 @@ export class CreateProductDto {
   @Expose()
   @IsNotEmpty()
   @IsNumber()
-  @IsDecimal()
   readonly price: number;
 
   @Expose()
