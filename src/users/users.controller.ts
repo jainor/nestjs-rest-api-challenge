@@ -42,6 +42,7 @@ export class UsersController {
 
   @Get('me')
   @UseGuards(AuthGuard())
+  @UsePipes(new ValidationPipe({ transform: true }))
   findOne(@GetUser() user: PublicUserDto) {
     return this.usersService.findOneByEmail(user.email);
   }

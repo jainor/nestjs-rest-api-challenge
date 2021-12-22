@@ -45,15 +45,21 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.prisma.user.findUnique({
-      where: { id: id },
-    });
+    return plainToClass(
+      UserDto,
+      this.prisma.user.findUnique({
+        where: { id: id },
+      }),
+    );
   }
 
   findOneByEmail(email: string) {
-    return this.prisma.user.findUnique({
-      where: { email: email },
-    });
+    return plainToClass(
+      UserDto,
+      this.prisma.user.findUnique({
+        where: { email: email },
+      }),
+    );
   }
 
   update(id: number, user: PublicUserDto, updateUserDto: UpdateUserDto) {
@@ -62,12 +68,15 @@ export class UsersService {
         'Please, you can not access others users info',
       );
     }
-    return this.prisma.user.update({
-      data: updateUserDto,
-      where: {
-        id,
-      },
-    });
+    return plainToClass(
+      UserDto,
+      this.prisma.user.update({
+        data: updateUserDto,
+        where: {
+          id,
+        },
+      }),
+    );
   }
 
   async auth(credentialsUserDto: CredentialsUserDto) {
