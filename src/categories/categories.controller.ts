@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -20,8 +22,9 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
@@ -37,8 +40,9 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -47,8 +51,8 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
+  @UseGuards(AuthGuard(), RolesGuard)
   remove(@Param('id') id: string) {
     return this.categoriesService.remove(+id);
   }
