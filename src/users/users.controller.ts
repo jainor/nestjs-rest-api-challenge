@@ -24,6 +24,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('signup')
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -47,6 +48,7 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(AuthGuard())
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
