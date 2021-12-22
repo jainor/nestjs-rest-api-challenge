@@ -36,7 +36,7 @@ model Product {
 model ShoppingCartItem {
   id            Int          @id @unique
   cartId        Int          @map("cart_id")
-  productId     Int          @unique @map("product_id")
+  productId     Int          @map("product_id")
   amount        Int          @default(0)
   createdAt     DateTime     @default(now()) @map("created_at")
   updatedAt     DateTime     @default(now()) @map("updated_at")
