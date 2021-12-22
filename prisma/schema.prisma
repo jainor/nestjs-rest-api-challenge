@@ -49,10 +49,10 @@ model ShoppingCartItem {
 
 model ShoppingCart {
   id                Int                @id @unique
-  user_id           Int
-  created_at        DateTime           @default(now())
-  updated_at        DateTime           @default(now())
-  users             User               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "shopping_carts_users_id_fkey")
+  userId            Int                @map("user_id")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @default(now()) @map("updated_at")
+  users             User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "shopping_carts_users_id_fkey")
   shoppingCartItems ShoppingCartItem[]
 
   @@map("shopping_carts")
