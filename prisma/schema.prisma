@@ -34,6 +34,7 @@ model Product {
 }
 
 model ShoppingCartItem {
+  @@unique([ cartId, productId ])
   id            Int          @id @unique
   cartId        Int          @map("cart_id")
   productId     Int          @map("product_id")
