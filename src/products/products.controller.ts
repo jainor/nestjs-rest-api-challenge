@@ -27,6 +27,7 @@ export class ProductsController {
   @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
   @UseGuards(AuthGuard(), RolesGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
@@ -45,6 +46,7 @@ export class ProductsController {
   @Patch(':id')
   @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(+id, updateProductDto);
   }
