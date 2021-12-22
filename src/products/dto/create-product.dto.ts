@@ -1,13 +1,5 @@
 import { Expose, Exclude } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsNumber,
-  IsPositive,
-  IsDecimal,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsPositive } from 'class-validator';
 
 @Exclude()
 export class CreateProductDto {
