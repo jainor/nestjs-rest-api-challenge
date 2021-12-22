@@ -1,12 +1,5 @@
 import { Expose, Exclude } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsNumber,
-  IsPositive,
-} from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
 
 @Exclude()
 export class CredentialsUserDto {

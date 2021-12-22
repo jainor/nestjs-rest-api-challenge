@@ -1,12 +1,4 @@
-import { Expose, Exclude, Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsNumber,
-  IsPositive,
-} from 'class-validator';
+import { Exclude, Type } from 'class-transformer';
 
 export class UserDto {
   readonly id: number;
