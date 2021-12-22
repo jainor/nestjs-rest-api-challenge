@@ -1,5 +1,4 @@
-import { Decimal } from '@prisma/client/runtime';
-import { Expose, Exclude, Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { IsDecimal } from 'class-validator';
 
 export class ProductDto {
