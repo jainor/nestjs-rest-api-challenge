@@ -36,8 +36,8 @@ export class UsersController {
   }
   @Post('signin')
   @UsePipes(new ValidationPipe({ transform: true }))
-  signIn(@Body() CredentialsUserDto: CredentialsUserDto) {
-    return this.usersService.auth(CredentialsUserDto);
+  signIn(@Body() credentialsUserDto: CredentialsUserDto) {
+    return this.usersService.auth(credentialsUserDto);
   }
 
   @Get('me')
