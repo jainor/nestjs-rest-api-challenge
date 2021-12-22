@@ -34,7 +34,6 @@ model Product {
 }
 
 model ShoppingCartItem {
-  @@unique([ cartId, productId ])
   id            Int          @id @unique
   cartId        Int          @map("cart_id")
   productId     Int          @map("product_id")
@@ -44,6 +43,7 @@ model ShoppingCartItem {
   shoppingCarts ShoppingCart @relation(fields: [cartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "shopping_cart_items_carts_id_fkey")
   products      Product      @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "shopping_cart_items_products_id_fkey")
 
+  @@unique([cartId, productId])
   @@map("shopping_cart_items")
 }
 
@@ -54,10 +54,6 @@ model ShoppingCart {
   updated_at        DateTime           @default(now())
   users             User               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "shopping_carts_users_id_fkey")
   shoppingCartItems ShoppingCartItem[]
-
-
-
-
 
   @@map("shopping_carts")
 }
