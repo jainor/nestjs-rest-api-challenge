@@ -14,7 +14,7 @@ import { CartItemsService } from './cart-items.service';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from '../users/get-user.decorator';
+import { GetUser } from '../users/decorators/get-user.decorator';
 import { PublicUserDto } from '../users/dto/public-user.dto';
 
 @Controller('cart/items')

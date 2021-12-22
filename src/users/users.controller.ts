@@ -15,7 +15,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from './get-user.decorator';
+import { GetUser } from './decorators/get-user.decorator';
 import { CredentialsUserDto } from './dto/credentials-user.dto';
 import { PublicUserDto } from './dto/public-user.dto';
 
