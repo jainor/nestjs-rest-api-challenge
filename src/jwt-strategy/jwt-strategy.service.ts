@@ -4,7 +4,9 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { PublicUserDto } from '../users/dto/public-user.dto';
+import { plainToClass } from 'class-transformer';
+import { UserDto } from '../users/dto/user.dto';
+
 @Injectable()
 export class JwtStrategyService extends PassportStrategy(Strategy) {
   constructor(
@@ -17,7 +19,7 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<PublicUserDto> {
+  async validate(payload: JwtPayload): Promise<UserDto> {
     const { email } = payload;
     const user = await this.prismaService.user.findUnique({
       where: { email: email },
@@ -27,6 +29,6 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    return plainToClass(UserDto, user);
   }
 }

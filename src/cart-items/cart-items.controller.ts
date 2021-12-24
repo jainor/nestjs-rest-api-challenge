@@ -15,7 +15,7 @@ import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/decorators/get-user.decorator';
-import { PublicUserDto } from '../users/dto/public-user.dto';
+import { UserDto } from '../users/dto/user.dto';
 
 @Controller('cart/items')
 export class CartItemsController {
@@ -26,7 +26,7 @@ export class CartItemsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   create(
     @Body() createCartItemDto: CreateCartItemDto,
-    @GetUser() user: PublicUserDto,
+    @GetUser() user: UserDto,
   ) {
     console.log(createCartItemDto);
     return this.cartItemsService.create(user.id, createCartItemDto);
@@ -35,14 +35,14 @@ export class CartItemsController {
   @Get()
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
-  findAll(@GetUser() user: PublicUserDto) {
+  findAll(@GetUser() user: UserDto) {
     return this.cartItemsService.findAllByCart(user.id);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
-  findOne(@GetUser() user: PublicUserDto, @Param('id') id: string) {
+  findOne(@GetUser() user: UserDto, @Param('id') id: string) {
     return this.cartItemsService.findOne(user.id, +id);
   }
 

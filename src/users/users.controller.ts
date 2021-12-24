@@ -9,6 +9,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -17,7 +18,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './decorators/get-user.decorator';
 import { CredentialsUserDto } from './dto/credentials-user.dto';
-import { PublicUserDto } from './dto/public-user.dto';
+import { UserDto } from './dto/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -43,7 +44,7 @@ export class UsersController {
   @Get('me')
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
-  findOne(@GetUser() user: PublicUserDto) {
+  findOne(@GetUser() user: UserDto) {
     return this.usersService.findOneByEmail(user.email);
   }
 
@@ -53,9 +54,14 @@ export class UsersController {
   update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
-    @GetUser() user: PublicUserDto,
+    @GetUser() user: UserDto,
   ) {
-    return this.usersService.update(+id, user, updateUserDto);
+    if (id != user.id) {
+      throw new UnauthorizedException(
+        'Please, you can not access others users info',
+      );
+    }
+    return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
