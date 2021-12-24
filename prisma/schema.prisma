@@ -59,7 +59,7 @@ model ShoppingCart {
 }
 
 model User {
-  id            Int            @id @unique
+  id            Int            @id @unique @default(autoincrement())
   email         String         @unique @db.VarChar
   password      String         @db.VarChar
   firstName     String         @map("first_name") @db.VarChar

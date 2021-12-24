@@ -7,7 +7,6 @@ import { CredentialsUserDto } from './dto/credentials-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from '../jwt-strategy/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
-import { PublicUserDto } from './dto/public-user.dto';
 import { UserDto } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
 
@@ -16,11 +15,7 @@ export class UsersService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { id, email, password } = createUserDto;
-
-    if (await this.prisma.user.count({ where: { id } })) {
-      throw new HttpException('id already used', HttpStatus.BAD_REQUEST);
-    }
+    const { email, password } = createUserDto;
 
     if (await this.prisma.user.count({ where: { email } })) {
       throw new HttpException('email already used', HttpStatus.BAD_REQUEST);
@@ -62,12 +57,7 @@ export class UsersService {
     );
   }
 
-  update(id: number, user: PublicUserDto, updateUserDto: UpdateUserDto) {
-    if (id != user.id) {
-      throw new UnauthorizedException(
-        'Please, you can not access others users info',
-      );
-    }
+  update(id: number, updateUserDto: UpdateUserDto) {
     return plainToClass(
       UserDto,
       this.prisma.user.update({
