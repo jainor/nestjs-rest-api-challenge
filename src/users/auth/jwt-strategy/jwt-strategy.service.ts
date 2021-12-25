@@ -5,7 +5,7 @@ import { JwtPayload } from './jwt-payload.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { plainToClass } from 'class-transformer';
-import { UserDto } from '../users/dto/user.dto';
+import { UserDto } from '../../dto/user.dto';
 
 @Injectable()
 export class JwtStrategyService extends PassportStrategy(Strategy) {

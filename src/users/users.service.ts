@@ -1,18 +1,20 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CredentialsUserDto } from './dto/credentials-user.dto';
-import * as bcrypt from 'bcrypt';
-import { JwtPayload } from '../jwt-strategy/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private authService: AuthService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
@@ -23,7 +25,7 @@ export class UsersService {
 
     const createUserHashedDto = {
       ...createUserDto,
-      password: await this.hashPassword(password),
+      password: await this.authService.hashPassword(password),
     };
 
     return plainToClass(
@@ -67,36 +69,6 @@ export class UsersService {
         },
       }),
     );
-  }
-
-  async auth(credentialsUserDto: CredentialsUserDto) {
-    const { email, password } = credentialsUserDto;
-    const user = await this.prisma.user.findUnique({
-      where: { email: email },
-    });
-
-    if (user && (await this.validatePassword(password, user.password))) {
-      const accessToken: string = await this.generateAccessToken({
-        email: email,
-      } as JwtPayload);
-      return { accessToken };
-    } else {
-      throw new UnauthorizedException('Please check your login credentials');
-    }
-  }
-
-  async hashPassword(password: string) {
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
-  }
-
-  async validatePassword(password: string, hashedpassword: string) {
-    return bcrypt.compare(password, hashedpassword);
-  }
-
-  async generateAccessToken(jwtPayload: JwtPayload) {
-    return this.jwtService.sign(jwtPayload);
   }
 
   remove(id: number) {

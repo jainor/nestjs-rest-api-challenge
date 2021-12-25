@@ -19,10 +19,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './decorators/get-user.decorator';
 import { CredentialsUserDto } from './dto/credentials-user.dto';
 import { UserDto } from './dto/user.dto';
+import { AuthService } from './auth/auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authservice: AuthService,
+  ) {}
 
   @Post('signup')
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -38,7 +42,7 @@ export class UsersController {
   @Post('signin')
   @UsePipes(new ValidationPipe({ transform: true }))
   signIn(@Body() credentialsUserDto: CredentialsUserDto) {
-    return this.usersService.auth(credentialsUserDto);
+    return this.authservice.auth(credentialsUserDto);
   }
 
   @Get('me')
