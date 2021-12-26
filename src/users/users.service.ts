@@ -5,14 +5,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
-import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private prisma: PrismaService,
-    private authService: AuthService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
