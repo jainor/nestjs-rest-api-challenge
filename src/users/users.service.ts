@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UserDto } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
 import { AuthService } from './auth/auth.service';
@@ -12,25 +11,19 @@ import { AuthService } from './auth/auth.service';
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService,
     private authService: AuthService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { email, password } = createUserDto;
+    const { email } = createUserDto;
 
     if (await this.prisma.user.count({ where: { email } })) {
       throw new HttpException('email already used', HttpStatus.BAD_REQUEST);
     }
 
-    const createUserHashedDto = {
-      ...createUserDto,
-      password: await this.authService.hashPassword(password),
-    };
-
     return plainToClass(
       UserDto,
-      await this.prisma.user.create({ data: createUserHashedDto }),
+      await this.prisma.user.create({ data: createUserDto }),
     );
   }
 

@@ -25,13 +25,17 @@ import { AuthService } from './auth/auth.service';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly authservice: AuthService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post('signup')
   @UsePipes(new ValidationPipe({ transform: true }))
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const createUserHashedDto = {
+      ...createUserDto,
+      password: await this.authService.hashPassword(createUserDto.password),
+    };
+    return this.usersService.create(createUserHashedDto);
   }
 
   @Get()
@@ -42,7 +46,7 @@ export class UsersController {
   @Post('signin')
   @UsePipes(new ValidationPipe({ transform: true }))
   signIn(@Body() credentialsUserDto: CredentialsUserDto) {
-    return this.authservice.auth(credentialsUserDto);
+    return this.authService.auth(credentialsUserDto);
   }
 
   @Get('me')
