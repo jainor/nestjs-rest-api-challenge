@@ -4,7 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { PaginationRequest } from '../pagination/dto/pagination-request.dto';
-import { ProductDto } from './dto/product-dto';
+import { ProductDto } from './dto/product.dto';
 import { PaginationResponse } from '../pagination/dto/pagination-response.dto';
 import { plainToClass } from 'class-transformer';
 
