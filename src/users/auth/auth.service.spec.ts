@@ -62,7 +62,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should check if password matched', async () => {
+    it('should check if passwords match', async () => {
       const equalPassword = authService.validatePassword(
         password,
         user.password,
