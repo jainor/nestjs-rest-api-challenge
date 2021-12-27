@@ -20,6 +20,7 @@ import { GetUser } from './decorators/get-user.decorator';
 import { CredentialsUserDto } from './dto/credentials-user.dto';
 import { UserDto } from './dto/user.dto';
 import { AuthService } from './auth/auth.service';
+import { plainToClass } from 'class-transformer';
 
 @Controller('users')
 export class UsersController {
@@ -35,13 +36,16 @@ export class UsersController {
       ...createUserDto,
       password: await this.authService.hashPassword(createUserDto.password),
     };
-    return this.usersService.create(createUserHashedDto);
+    return plainToClass(
+      UserDto,
+      await this.usersService.create(createUserHashedDto),
+    );
   }
 
   @Get()
   @UseGuards(AuthGuard())
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    return plainToClass(UserDto, await this.usersService.findAll());
   }
   @Post('signin')
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -53,7 +57,7 @@ export class UsersController {
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   findOne(@GetUser() user: UserDto) {
-    return this.usersService.findOneByEmail(user.email);
+    return plainToClass(UserDto, this.usersService.findOneByEmail(user.email));
   }
 
   @Patch(':id')
@@ -69,7 +73,7 @@ export class UsersController {
         'Please, you can not access others users info',
       );
     }
-    return this.usersService.update(+id, updateUserDto);
+    return plainToClass(UserDto, this.usersService.update(+id, updateUserDto));
   }
 
   @Delete(':id')

@@ -17,47 +17,32 @@ export class UsersService {
       throw new HttpException('email already used', HttpStatus.BAD_REQUEST);
     }
 
-    return plainToClass(
-      UserDto,
-      await this.prisma.user.create({ data: createUserDto }),
-    );
+    return this.prisma.user.create({ data: createUserDto });
   }
 
   async findAll(): Promise<UserDto[]> {
-    const result = await this.prisma.user.findMany();
-
-    const data = plainToClass(UserDto, result);
-    return data;
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {
-    return plainToClass(
-      UserDto,
-      this.prisma.user.findUnique({
-        where: { id: id },
-      }),
-    );
+    return this.prisma.user.findUnique({
+      where: { id: id },
+    });
   }
 
   findOneByEmail(email: string) {
-    return plainToClass(
-      UserDto,
-      this.prisma.user.findUnique({
-        where: { email: email },
-      }),
-    );
+    return this.prisma.user.findUnique({
+      where: { email: email },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return plainToClass(
-      UserDto,
-      this.prisma.user.update({
-        data: updateUserDto,
-        where: {
-          id,
-        },
-      }),
-    );
+    return this.prisma.user.update({
+      data: updateUserDto,
+      where: {
+        id,
+      },
+    });
   }
 
   remove(id: number) {
