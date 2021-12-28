@@ -16,12 +16,15 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../users/decorators/rol.decorator';
 import { RolesGuard } from '../users/decorators/rol.guard';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @ApiOAuth2([])
   @Roles('admin', 'manager')
   @UseGuards(AuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -40,6 +43,7 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @ApiOAuth2([])
   @Roles('admin', 'manager')
   @UseGuards(AuthGuard(), RolesGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -51,6 +55,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @ApiOAuth2([])
   @Roles('admin', 'manager')
   @UseGuards(AuthGuard(), RolesGuard)
   remove(@Param('id') id: string) {

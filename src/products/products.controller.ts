@@ -18,12 +18,15 @@ import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../users/decorators/rol.decorator';
 import { RolesGuard } from '../users/decorators/rol.guard';
 import { PaginationRequest } from '../pagination/dto/pagination-request.dto';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
   @UseGuards(AuthGuard(), RolesGuard)
@@ -44,6 +47,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -52,6 +56,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @Roles('admin', 'manager')
   remove(@Param('id') id: string) {

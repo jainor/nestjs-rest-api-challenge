@@ -16,12 +16,15 @@ import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/decorators/get-user.decorator';
 import { UserDto } from '../users/dto/user.dto';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Cart')
 @Controller('cart/items')
 export class CartItemsController {
   constructor(private readonly cartItemsService: CartItemsService) {}
 
   @Post()
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   create(
@@ -33,6 +36,7 @@ export class CartItemsController {
   }
 
   @Get()
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   findAll(@GetUser() user: UserDto) {
@@ -40,6 +44,7 @@ export class CartItemsController {
   }
 
   @Get(':id')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   findOne(@GetUser() user: UserDto, @Param('id') id: string) {
@@ -47,6 +52,7 @@ export class CartItemsController {
   }
 
   @Patch(':id')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   update(

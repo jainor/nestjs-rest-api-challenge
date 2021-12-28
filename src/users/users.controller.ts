@@ -21,7 +21,9 @@ import { CredentialsUserDto } from './dto/credentials-user.dto';
 import { UserDto } from './dto/user.dto';
 import { AuthService } from './auth/auth.service';
 import { plainToClass } from 'class-transformer';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -43,6 +45,7 @@ export class UsersController {
   }
 
   @Get()
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   async findAll() {
     return plainToClass(UserDto, await this.usersService.findAll());
@@ -54,6 +57,7 @@ export class UsersController {
   }
 
   @Get('me')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   findOne(@GetUser() user: UserDto) {
@@ -61,6 +65,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @ApiOAuth2([])
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({ transform: true }))
   update(
