@@ -5,19 +5,19 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - echo $AWS_DEFAULT_REGION
-      - echo $AWS_ACCOUNT_ID
+      - echo $AWS_ACCOUNT_ID  # Set account id. e.g 752908357488
+      - echo $AWS_ECR_NAME        # Set ECR name. e.g nest-app
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t $REPOSITORY_URI:latest .
+      - docker build -t $AWS_ECR_NAME .
       - echo $IMAGE_REPO_NAME
       - echo $IMAGE_TAG
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG   
+      - docker tag $AWS_ECR_NAME :latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$AWS_ECR_NAME:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push  $REPOSITORY_URI:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$AWS_ECR_NAME:latest
