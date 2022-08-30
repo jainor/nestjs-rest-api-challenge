@@ -7,4 +7,3 @@ workflows:
       - aws-ecr/build-and-push:
           repo: fees_api_ecr
 
-
